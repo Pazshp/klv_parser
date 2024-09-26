@@ -160,7 +160,10 @@ class MappedValue(BaseValue):
         self._error = _error
 
         try:
-            self.value = bytes_to_float(value, self._domain, self._range, self._error)
+            if min(self._domain) == min(self._range) and max(self._domain) == max(self._range):
+                self.value = bytes_to_int(value, signed=(min(_domain) < 0))
+            else:
+                self.value = bytes_to_float(value, self._domain, self._range, self._error)
         except TypeError:
             self.value = value
 

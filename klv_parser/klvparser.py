@@ -30,13 +30,19 @@ from klvdata.common import bytes_to_int
 
 class KLVParser(object):
     """Return key, value pairs parsed from an SMPTE ST 336 source."""
-    def __init__(self, source, key_length):
-        if isinstance(source, IOBase):
-            self.source = source
-        else:
-            self.source = BytesIO(source)
+    def __init__(self, source=None, key_length=1):
+        self.source = self.to_BytesIO(source)
 
         self.key_length = key_length
+
+    def to_BytesIO(self, source=None):
+        if source is None:
+            return None
+        elif isinstance(source, IOBase):
+            return source
+        else:
+            return BytesIO(source)
+
 
     def __iter__(self):
         return self

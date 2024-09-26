@@ -31,7 +31,7 @@ from klvdata.klvparser import KLVParser
 class StreamParser:
     parsers = {}
 
-    def __init__(self, source):
+    def __init__(self, source=None):
         self.source = source
 
         # All keys in parser are expected to be 16 bytes long.
@@ -49,6 +49,10 @@ class StreamParser:
             # Even if KLV is not known, make best effort to parse and preserve.
             # Element is an abstract super class, do not create instances on Element.
             return UnknownElement(key, value)
+
+    def set_source(self, source):
+        self.source = source
+        self.iter_stream.source = self.iter_stream.to_BytesIO(source)
 
     @classmethod
     def add_parser(cls, obj):
