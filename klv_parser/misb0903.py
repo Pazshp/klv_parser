@@ -23,15 +23,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from klvdata.common import hexstr_to_bytes
-from klvdata.element import UnknownElement
-from klvdata.elementparser import BytesElementParser
-from klvdata.elementparser import DateTimeElementParser
-from klvdata.elementparser import MappedElementParser
-from klvdata.elementparser import StringElementParser
-from klvdata.misb0601 import UASLocalMetadataSet
-from klvdata.setparser import SetParser
-from klvdata.streamparser import StreamParser
+from klv_parser.element import UnknownElement
+from klv_parser.elementparser import BytesElementParser
+from klv_parser.elementparser import DateTimeElementParser
+from klv_parser.elementparser import MappedElementParser
+from klv_parser.elementparser import StringElementParser
+from klv_parser.misb0601 import UASLocalMetadataSet
+from klv_parser.setparser import SetParser
 
 
 class UnknownElement(UnknownElement):

@@ -27,9 +27,9 @@ from pprint import pformat
 from abc import ABCMeta
 from abc import abstractmethod
 from collections import OrderedDict
-from klvdata.element import Element
-from klvdata.element import UnknownElement
-from klvdata.klvparser import KLVParser
+from klv_parser.element import Element
+from klv_parser.element import UnknownElement
+from klv_parser.klvparser import KLVParser
 
 
 class SetParser(Element, metaclass=ABCMeta):

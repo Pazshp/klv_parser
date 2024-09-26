@@ -25,16 +25,16 @@
 
 from abc import ABCMeta
 from abc import abstractmethod
-from klvdata.element import Element
-from klvdata.common import bytes_to_datetime
-from klvdata.common import bytes_to_int
-from klvdata.common import bytes_to_float
-from klvdata.common import bytes_to_hexstr
-from klvdata.common import bytes_to_str
-from klvdata.common import datetime_to_bytes
-from klvdata.common import float_to_bytes
-from klvdata.common import str_to_bytes
-from klvdata.common import ieee754_bytes_to_fp
+from klv_parser.element import Element
+from klv_parser.common import bytes_to_datetime
+from klv_parser.common import bytes_to_int
+from klv_parser.common import bytes_to_float
+from klv_parser.common import bytes_to_hexstr
+from klv_parser.common import bytes_to_str
+from klv_parser.common import datetime_to_bytes
+from klv_parser.common import float_to_bytes
+from klv_parser.common import str_to_bytes
+from klv_parser.common import ieee754_bytes_to_fp
                                            
 
 

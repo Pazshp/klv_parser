@@ -23,9 +23,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from klvdata.element import UnknownElement
+from klv_parser.element import UnknownElement
 
-from klvdata.klvparser import KLVParser
+from klv_parser.klvparser import KLVParser
 
 
 class StreamParser:
