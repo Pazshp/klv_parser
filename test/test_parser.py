@@ -36,7 +36,7 @@ class ParserSingleShort(ParserTestCase):
 
         self.packet = self.key + self.length + self.value
 
-        from klvdata.klvparser import KLVParser
+        from klv_parser.klvparser import KLVParser
         self.parser = KLVParser(self.packet, key_length=1)
 
     def test_key(self):
@@ -62,7 +62,7 @@ class ParserSingleLong(ParserTestCase):
         assert len(self.length) == 2
         self.value = self.packet[18:]
 
-        from klvdata.klvparser import KLVParser
+        from klv_parser.klvparser import KLVParser
         self.parser = KLVParser(self.packet, key_length=16)
 
     def test_key(self):

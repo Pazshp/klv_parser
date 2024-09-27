@@ -1,8 +1,8 @@
-# Contributing to klvdata
+# Contributing to klv_parser
 
 ## Welcome
 
-Our project is open to contributors. A Contributor is a volunteer who promotes the project by granting services and data to the project. Contributors are recognized in [CONTRIBUTORS.md](https://github.com/paretech/klvdata/blob/master/CONTRIBUTORS.md). Our project depends on contributors, so a big thank you for your interest. Still here? Then Welcome to the team! [Fork klvdata on GitHub](https://github.com/paretech/klvdata/fork) and let's get started.
+Our project is open to contributors. A Contributor is a volunteer who promotes the project by granting services and data to the project. Contributors are recognized in [CONTRIBUTORS.md](https://github.com/Pazshp/klv_parser/blob/master/CONTRIBUTORS.md). Our project depends on contributors, so a big thank you for your interest. Still here? Then Welcome to the team! [Fork klvdata on GitHub](https://github.com/paretech/klvdata/fork) and let's get started.
 
 ## In a Nutshell
 

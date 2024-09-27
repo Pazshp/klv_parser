@@ -1,4 +1,4 @@
-klvdata
+klv_parser
 =======
 .. image:: https://travis-ci.org/paretech/klvdata.svg?branch=master
     :target: https://travis-ci.org/paretech/klvdata

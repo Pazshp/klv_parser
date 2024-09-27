@@ -46,7 +46,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'klvdata'
+project = 'klv_parser'
 copyright = '2017, Matthew Pare'
 author = 'Matthew Pare'
 

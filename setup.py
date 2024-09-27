@@ -18,7 +18,7 @@ with open(path.join(pwd, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='klvdata',
+    name='klv_parser',
 
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
@@ -32,8 +32,8 @@ setup(
     url='https://github.com/paretech/klvdata/',
 
     # Author details
-    author='paretech',
-    author_email="paretech@gmail.com",
+    author='Pazshp',
+    author_email="pazshp@gmail.com",
     
     # License details
     license='MIT',
@@ -69,7 +69,7 @@ setup(
     # What does your project relate to?
     keywords='STANAG 4609, MISB, KLV, Metadata, Video',
 
-    packages=['klvdata'],
+    packages=['klv_parser'],
     test_suite="test",
 
     python_requires='>=3.5',

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-import klvdata
+import klv_parser
 
 if __name__ == "__main__":
 	with open('./data/DynamicConstantMISMMSPacketData.bin', 'rb') as f:
-		for packet in klvdata.StreamParser(f):
+		for packet in klv_parser.StreamParser(f):
 			packet.structure()

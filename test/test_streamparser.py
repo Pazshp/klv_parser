@@ -31,9 +31,9 @@ class ParserSingleLong(unittest.TestCase):
         with open('./data/DynamicConstantMISMMSPacketData.bin', 'rb') as f:
             packet = f.read()
 
-        from klvdata.streamparser import StreamParser
-        from klvdata import misb0601
-        from klvdata import misb0102
+        from klv_parser.streamparser import StreamParser
+        from klv_parser import misb0601
+        from klv_parser import misb0102
 
         for packet in StreamParser(packet):
             # packet.structure()

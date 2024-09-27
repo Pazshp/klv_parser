@@ -1,69 +1,69 @@
-klvdata package
+klv_parser package
 =================
 
 Submodules
 ----------
 
-klvdata\.common module
+klv_parser\.common module
 ------------------------
 
-.. automodule:: klvdata.common
+.. automodule:: klv_parser.common
     :members:
     :undoc-members:
     :show-inheritance:
 
-klvdata\.element module
+klv_parser\.element module
 -------------------------
 
-.. automodule:: klvdata.element
+.. automodule:: klv_parser.element
     :members:
     :undoc-members:
     :show-inheritance:
 
-klvdata\.elementparser module
+klv_parser\.elementparser module
 -------------------------------
 
-.. automodule:: klvdata.elementparser
+.. automodule:: klv_parser.elementparser
     :members:
     :undoc-members:
     :show-inheritance:
 
-klvdata\.klvparser module
+klv_parser\.klvparser module
 ---------------------------
 
-.. automodule:: klvdata.klvparser
+.. automodule:: klv_parser.klvparser
     :members:
     :undoc-members:
     :show-inheritance:
 
-klvdata\.misb0102 module
+klv_parser\.misb0102 module
 --------------------------
 
-.. automodule:: klvdata.misb0102
+.. automodule:: klv_parser.misb0102
     :members:
     :undoc-members:
     :show-inheritance:
 
-klvdata\.misb0601 module
+klv_parser\.misb0601 module
 --------------------------
 
-.. automodule:: klvdata.misb0601
+.. automodule:: klv_parser.misb0601
     :members:
     :undoc-members:
     :show-inheritance:
 
-klvdata\.setparser module
+klv_parser\.setparser module
 ---------------------------
 
-.. automodule:: klvdata.setparser
+.. automodule:: klv_parser.setparser
     :members:
     :undoc-members:
     :show-inheritance:
 
-klvdata\.streamparser module
+klv_parser\.streamparser module
 ------------------------------
 
-.. automodule:: klvdata.streamparser
+.. automodule:: klv_parser.streamparser
     :members:
     :undoc-members:
     :show-inheritance:
@@ -72,7 +72,7 @@ klvdata\.streamparser module
 Module contents
 ---------------
 
-.. automodule:: klvdata
+.. automodule:: klv_parser
     :members:
     :undoc-members:
     :show-inheritance:

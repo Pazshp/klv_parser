@@ -23,7 +23,7 @@
 
 import unittest
 
-from klvdata.common import bytes_to_hexstr
+from klv_parser.common import bytes_to_hexstr
 
 
 class ParserSingleShort(unittest.TestCase):
@@ -34,7 +34,7 @@ class ParserSingleShort(unittest.TestCase):
         value = b'\x01\x01\x01\x02\x01\x07\x03\x05//USA\x0c\x01\x07\r\x06\x00U\x00S\x00A\x16\x02\x00\n'
         klv = key + length + value
 
-        from klvdata.misb0102 import SecurityLocalMetadataSet
+        from klv_parser.misb0102 import SecurityLocalMetadataSet
 
         # Basic Properties
         self.assertEqual(SecurityLocalMetadataSet(value).key, key)
@@ -59,7 +59,7 @@ class ParserSingleShort(unittest.TestCase):
         assert len(length) == 2
         value = klv[18:]
 
-        from klvdata.misb0601 import UASLocalMetadataSet
+        from klv_parser.misb0601 import UASLocalMetadataSet
         # from misb0102 import ST0102
 
         # Basic Properties
@@ -78,7 +78,7 @@ class ParserSingleShort(unittest.TestCase):
         value = b'0\x1c\x01\x01\x01\x02\x01\x07\x03\x05//USA\x0c\x01\x07\r\x06\x00U\x00S\x00A\x16\x02\x00\n'
         klv = key + length + value
 
-        from klvdata.misb0601 import UASLocalMetadataSet
+        from klv_parser.misb0601 import UASLocalMetadataSet
         # from misb0102 import ST0102
 
         # Basic Properties
@@ -93,7 +93,7 @@ class ParserSingleShort(unittest.TestCase):
         value = b'\x00\x04\x60\x50\x58\x4E\x01\x80'
         klv = key + length + value
 
-        from klvdata.misb0601 import PrecisionTimeStamp
+        from klv_parser.misb0601 import PrecisionTimeStamp
 
         # Basic Properties
         self.assertEqual(PrecisionTimeStamp(value).key, key)
