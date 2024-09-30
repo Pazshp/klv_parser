@@ -26,7 +26,7 @@
 from abc import ABCMeta
 from abc import abstractmethod
 from klv_parser.element import Element
-from klv_parser.common import bytes_to_datetime
+from klv_parser.common import bytes_to_datetime, imapb_to_float, float_to_imapb
 from klv_parser.common import bytes_to_int
 from klv_parser.common import bytes_to_float
 from klv_parser.common import bytes_to_hexstr
@@ -177,6 +177,48 @@ class MappedValue(BaseValue):
 
     def __float__(self):
         return self.value
+
+class LocationElementParser(ElementParser, metaclass=ABCMeta):
+    def __init__(self, value):
+        super().__init__(LocationValue(value))
+
+class IMAPBElementParser(ElementParser, metaclass=ABCMeta):
+    def __init__(self, value):
+        super().__init__(IMAPBValue(value, self._range))
+
+    @property
+    @classmethod
+    @abstractmethod
+    def _range(cls):
+        pass
+
+class IMAPBValue(BaseValue):
+    def __init__(self, value, _range):
+        self._range = _range
+        self._length = len(value)
+        self.value = imapb_to_float(value, self._range)
+
+    def __bytes__(self):
+        return float_to_imapb(self.value, self._length, self._range)
+
+    def __str__(self):
+        return str(self.value)
+
+class LocationValue(BaseValue):
+    def __init__(self, value):
+        self.value = (imapb_to_float(value[0:4], (-90, 90)),
+                    imapb_to_float(value[4:8], (-180, 180)),
+                    imapb_to_float(value[8:10], (-900, 19000)))
+
+    def __bytes__(self):
+        lat, long, alt = self.value
+        return (float_to_imapb(lat, 4, (-90, 90)) +
+                float_to_imapb(long, 4, (-180, 180)) +
+                float_to_imapb(alt, 2, (-900, 19000)))
+
+    def __str__(self):
+        return str(self.value)
+
 
 class IEEE754ElementParser(ElementParser, metaclass=ABCMeta):
     def __init__(self, value):
