@@ -262,7 +262,7 @@ class SensorHorizontalFieldOfView(MappedElementParser):
     ESDName = "Field of View"
     UDSName = "Field of View (FOVHorizontal)"
     _domain = (0, 2**16-1)
-    _range = (0, 180)
+    _range = (0, 2**16-1)
     _error = None
     units = 'degrees'
 
@@ -276,7 +276,7 @@ class SensorVerticalFieldOfView(MappedElementParser):
     ESDName = "Vertical Field of View"
     UDSName = ""
     _domain = (0, 2**16-1)
-    _range = (0, 180)
+    _range = (0, 2**16-1)
     _error = None
     units = 'degrees'
 
