@@ -23,9 +23,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from sys import maxsize
 from io import BytesIO
 from io import IOBase
-from klv_parser.common import bytes_to_int
+from klv_parser.common import bytes_to_int, bytes_to_hexstr
 
 
 class KLVParser(object):
@@ -59,15 +60,19 @@ class KLVParser(object):
             # BER Long Form
             length = bytes_to_int(self.__read(byte_length - 128))
 
-        value = self.__read(length)
+        try:
+            value = self.__read(length)
+        except OverflowError:
+            return key, None
 
         return key, value
 
     def __read(self, size):
+        if size < 0 or size > maxsize:
+            raise OverflowError
+
         if size == 0:
             return b''
-
-        assert size > 0
 
         data = self.source.read(size)
 

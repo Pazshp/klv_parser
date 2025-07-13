@@ -28,19 +28,18 @@ from klv_parser.elementparser import BytesElementParser
 from klv_parser.elementparser import DateTimeElementParser
 from klv_parser.elementparser import MappedElementParser
 from klv_parser.elementparser import StringElementParser
+from klv_parser.elementparser import IntegerElementParser
 from klv_parser.elementparser import LocationElementParser
 from klv_parser.misb0601 import UASLocalMetadataSet
-from klv_parser.seriesparser import SeriesParser
 from klv_parser.setparser import SetParser
-
-
-class UnknownElement(UnknownElement):
-    pass
+from klv_parser.seriesparser import SeriesParser
 
 
 @UASLocalMetadataSet.add_parser
 class VMTILocalSet(SetParser):
-    """MISB ST0903 VMTI Local Set"""
+    """MISB ST0903 VMTI Metadata nested local set parser.
+    Must be a subclass of Element or duck type Element.
+    """
     key = b'\x4A'
     name = 'VMTI_Local_Set'
     TAG = 74
@@ -120,27 +119,20 @@ class LSVersionNumber(MappedElementParser):
 
 
 @VMTILocalSet.add_parser
-class TotalTragetsNumber(MappedElementParser):
-    key = b'\x05'
-    TAG = 5
-    _domain = (0, 2 ** 24 - 1)
-    _range = (0, 2 ** 24 - 1)
-    _error = None
-
-@VMTILocalSet.add_parser
-class NumberDetectedTargets(MappedElementParser):
+class NumberDetectedTargets(IntegerElementParser):
     key = b'\x05'
     TAG = 5
     UDSKey = "-"
     LDSName = "Number of Detected Targets"
     ESDName = "Number of Detected Targets"
     UDSName = ""
-    _domain = (0, 2 ** 24 - 1)
-    _range = (0, 2 ** 24 - 1)
-    _error = None
+
+    _signed = False
+    _size = 3
+
 
 @VMTILocalSet.add_parser
-class NumberReportedTargets(MappedElementParser):
+class NumberReportedTargets(IntegerElementParser):
     key = b'\x06'
     TAG = 6
     UDSKey = "-"
@@ -148,12 +140,12 @@ class NumberReportedTargets(MappedElementParser):
     ESDName = "Number of Reported Targets"
     UDSName = ""
 
-    _domain = (0, 2 ** 24 - 1)
-    _range = (0, 2 ** 24 - 1)
-    _error = None
+    _signed = False
+    _size = 3
+
 
 @VMTILocalSet.add_parser
-class FrameNumber(MappedElementParser):
+class FrameNumber(IntegerElementParser):
     key = b'\x07'
     TAG = 5
     UDSKey = "-"
@@ -161,13 +153,12 @@ class FrameNumber(MappedElementParser):
     ESDName = "Frame Number"
     UDSName = ""
 
-    _domain = (0, 2 ** 24 - 1)
-    _range = (0, 2 ** 24 - 1)
-    _error = None
+    _signed = False
+    _size = 3
 
 
 @VMTILocalSet.add_parser
-class FrameWidth(MappedElementParser):
+class FrameWidth(IntegerElementParser):
     key = b'\x08'
     TAG = 8
     UDSKey = "-"
@@ -175,13 +166,12 @@ class FrameWidth(MappedElementParser):
     ESDName = "Frame Width"
     UDSName = ""
 
-    _domain = (0, 2 ** 24 - 1)
-    _range = (0, 2 ** 24 - 1)
-    _error = None
+    _signed = False
+    _size = 3
 
 
 @VMTILocalSet.add_parser
-class FrameHeight(MappedElementParser):
+class FrameHeight(IntegerElementParser):
     key = b'\x09'
     TAG = 9
     UDSKey = "-"
@@ -189,9 +179,9 @@ class FrameHeight(MappedElementParser):
     ESDName = "Frame Height"
     UDSName = ""
 
-    _domain = (0, 2 ** 24 - 1)
-    _range = (0, 2 ** 24 - 1)
-    _error = None
+    _signed = False
+    _size = 3
+
 
 @VMTILocalSet.add_parser
 class SourceSensor(StringElementParser):
@@ -209,25 +199,31 @@ class SourceSensor(StringElementParser):
 @VMTILocalSet.add_parser
 class VTargetSeries(SeriesParser):
     key = b'\x65'
-    TAG = 101
-
     name = "VTarget Series"
+    TAG = 101
+    # key_length = 1
     parser = None
 
 
 @VTargetSeries.set_parser
 class VTargetPack(SetParser):
+    # key = b'\x65'
     name = "VMTI Target Pack"
+    # TAG = 101
+    # key_length = 1
     parsers = {}
 
     def __init__(self, value):
+        print('paz: ', value)
         """All parser needs is the value, no other information"""
         self.key = value[0].to_bytes(1, byteorder='big')
+        print('paz2: ', self.key)
         super().__init__(value[1:])
+        pass
 
 
 @VTargetPack.add_parser
-class CentroidPixel(MappedElementParser):
+class CentroidPixel(IntegerElementParser):
     key = b'\x01'
     TAG = 1
     UDSKey = "-"
@@ -235,13 +231,12 @@ class CentroidPixel(MappedElementParser):
     ESDName = "Centroid Pixel"
     UDSName = ""
 
-    _domain = (0, 2 ** 24 - 1)
-    _range = (0, 2 ** 24 - 1)
-    _error = None
+    _signed = False
+    _size = 3
 
 
 @VTargetPack.add_parser
-class BoundingBoxTopLeftPixel(MappedElementParser):
+class BoundingBoxTopLeftPixel(IntegerElementParser):
     key = b'\x02'
     TAG = 2
     UDSKey = "-"
@@ -249,13 +244,12 @@ class BoundingBoxTopLeftPixel(MappedElementParser):
     ESDName = "Bounding Box Top Left Pixel"
     UDSName = ""
 
-    _domain = (0, 2 ** 24 - 1)
-    _range = (0, 2 ** 24 - 1)
-    _error = None
+    _signed = False
+    _size = 3
 
 
 @VTargetPack.add_parser
-class BoundingBoxBottomRightPixel(MappedElementParser):
+class BoundingBoxBottomRightPixel(IntegerElementParser):
     key = b'\x03'
     TAG = 3
     UDSKey = "-"
@@ -263,13 +257,12 @@ class BoundingBoxBottomRightPixel(MappedElementParser):
     ESDName = "Bounding Box Bottom Right Pixel"
     UDSName = ""
 
-    _domain = (0, 2 ** 24 - 1)
-    _range = (0, 2 ** 24 - 1)
-    _error = None
+    _signed = False
+    _size = 3
 
 
 @VTargetPack.add_parser
-class DetectionCount(MappedElementParser):
+class DetectionCount(IntegerElementParser):
     key = b'\x06'
     TAG = 6
     UDSKey = "-"
@@ -277,13 +270,12 @@ class DetectionCount(MappedElementParser):
     ESDName = "Detection Count"
     UDSName = ""
 
-    _domain = (0, 2 ** 24 - 1)
-    _range = (0, 2 ** 24 - 1)
-    _error = None
+    _signed = False
+    _size = 2
 
 
 @VTargetPack.add_parser
-class TargetIntensity(MappedElementParser):
+class TargetIntensity(IntegerElementParser):
     key = b'\x09'
     TAG = 9
     UDSKey = "-"
@@ -291,17 +283,15 @@ class TargetIntensity(MappedElementParser):
     ESDName = "Target Intensity"
     UDSName = ""
 
-    _domain = (0, 2 ** 24 - 1)
-    _range = (0, 2 ** 24 - 1)
-    _error = None
+    _signed = False
+    _size = 3
 
 
-@VTargetPack.add_parser
-class TargetLocation(LocationElementParser):
-    key = b'\x11'
-    TAG = 17
-    UDSKey = "-"
-    LDSName = "Target Location"
-    ESDName = "Target Location"
-    UDSName = ""
-
+# @VTargetPack.add_parser
+# class TargetLocation(LocationElementParser):
+#     key = b'\x11'
+#     TAG = 17
+#     UDSKey = "-"
+#     LDSName = "Target Location"
+#     ESDName = "Target Location"
+#     UDSName = ""
