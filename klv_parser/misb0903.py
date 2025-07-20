@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+import numpy as np
 
 # The MIT License (MIT)
 #
@@ -207,19 +208,27 @@ class VTargetSeries(SeriesParser):
 
 @VTargetSeries.set_parser
 class VTargetPack(SetParser):
-    # key = b'\x65'
-    name = "VMTI Target Pack"
-    # TAG = 101
-    # key_length = 1
+    name = "VMTI Target Pack" # will be overwritten by the track id
+    # key_length = 0 # not needed cause there is no key for target object
     parsers = {}
 
     def __init__(self, value):
-        print('paz: ', value)
         """All parser needs is the value, no other information"""
-        self.key = value[0].to_bytes(1, byteorder='big')
-        print('paz2: ', self.key)
-        super().__init__(value[1:])
-        pass
+        self.key, value = self.decode_ber_length(value)
+        self.name = self.key
+        super().__init__(value)
+
+
+    @staticmethod
+    def decode_ber_length(value):
+        if not value[0] & 0x80:
+            return np.uint32(value[0] & 0x7F)
+        buf = value[1: 1 + (value[0] & 0x7F)]
+        out = 0
+        for octet in buf:
+            out <<= 8
+            out += octet
+        return np.uint32(out), value[1 + (value[0] & 0x7F):]
 
 
 @VTargetPack.add_parser
