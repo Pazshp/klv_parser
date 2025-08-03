@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-from math import floor, ceil, log
+
 # The MIT License (MIT)
 #
 # Copyright (c) 2017 Matthew Pare (paretech@gmail.com)
@@ -28,7 +28,7 @@ from struct import unpack
 from datetime import datetime
 from datetime import timezone
 from binascii import hexlify, unhexlify
-
+from math import log, ceil, floor
 
 def datetime_to_bytes(value):
     """Return bytes representing UTC time in microseconds."""
@@ -37,7 +37,7 @@ def datetime_to_bytes(value):
 
 def bytes_to_datetime(value):
     """Return datetime from microsecond bytes."""
-    return datetime.fromtimestamp(bytes_to_int(value) / 1e6, tz=timezone.utc)
+    return datetime.fromtimestamp(bytes_to_int(value)/1e6, tz=timezone.utc)
 
 
 def bytes_to_int(value, signed=False):
@@ -78,13 +78,16 @@ def ber_encode(value):
         return int_to_bytes(byte_length + 128) + int_to_bytes(value, length=byte_length)
 
 
-def bytes_to_str(value):
-    """Return UTF-8 formatted string from bytes object."""
-    return bytes(value).decode('UTF-8')
+def bytes_to_str(value, encoding='UTF-8'):
+    """Return string from bytes object."""
+    if isinstance(value, str):
+        return value
+    else:
+        return bytes(value).decode(encoding)
 
 
-def str_to_bytes(value):
-    """Return bytes object from UTF-8 formatted string."""
+def str_to_bytes(value, encoding='UTF-8'):
+    """Return bytes object from string."""
     return bytes(str(value), 'UTF-8')
 
 
@@ -112,6 +115,7 @@ def linear_map(src_value, src_domain, dst_range):
     it should always fall within the src_domain. If not, that's a problem.
     """
     src_min, src_max, dst_min, dst_max = src_domain + dst_range
+    # assert(src_min <= src_value <= src_max)
 
     if not (src_min <= src_value <= src_max):
         raise ValueError
@@ -124,14 +128,9 @@ def linear_map(src_value, src_domain, dst_range):
 
     return dst_value
 
-
-def bytes_to_float(value, _domain, _range, _error=None):
+def bytes_to_float(value, _domain, _range):
     """Convert the fixed point value self.value to a floating point value."""
     src_value = int().from_bytes(value, byteorder='big', signed=(min(_domain) < 0))
-
-    if src_value == _error:
-        return None
-
     return linear_map(src_value, _domain, _range)
 
 
@@ -147,7 +146,7 @@ def ieee754_bytes_to_fp(value):
         raise ValueError
 
 
-def float_to_bytes(value, _domain, _range, _error=None):
+def float_to_bytes(value, _domain, _range):
     """Convert the fixed point value self.value to a floating point value."""
     # Some classes like MappedElement are calling float_to_bytes with arguments _domain
     # and _range in the incorrect order. The naming convention used is confusing and
@@ -155,12 +154,8 @@ def float_to_bytes(value, _domain, _range, _error=None):
     src_domain, dst_range = _range, _domain
     src_min, src_max, dst_min, dst_max = src_domain + dst_range
     length = int((dst_max - dst_min - 1).bit_length() / 8)
-    if value is None:
-        dst_value = _error
-    else:
-        dst_value = linear_map(value, src_domain=src_domain, dst_range=dst_range)
+    dst_value = linear_map(value, src_domain=src_domain, dst_range=dst_range)
     return round(dst_value).to_bytes(length, byteorder='big', signed=(dst_min < 0))
-
 
 def float_to_imapb(value, _length, _range):
     _min, _max = _range
@@ -169,7 +164,7 @@ def float_to_imapb(value, _length, _range):
 
     bPow = ceil(log(_max - _min, 2))
     dPow = 8 * _length - 1
-    sF = 2 ** (dPow - bPow)
+    sF = 2**(dPow - bPow)
     zOffset = 0.0
     if _min < 0 and _max > 0:
         zOffset = sF * _min - floor(sF * _min)
@@ -178,22 +173,20 @@ def float_to_imapb(value, _length, _range):
 
     return int_to_bytes(y, _length, signed=True)
 
-
 def imapb_to_float(value, _range):
     _min, _max = _range
     length = len(value)
 
     bPow = ceil(log(_max - _min, 2))
     dPow = 8 * length - 1
-    sF = 2 ** (dPow - bPow)
-    sR = 2 ** (bPow - dPow)
+    sF = 2**(dPow - bPow)
+    sR = 2**(bPow - dPow)
     zOffset = 0.0
     if _min < 0 and _max > 0:
         zOffset = sF * _min - floor(sF * _min)
 
     y = bytes_to_int(value, signed=True)
     return sR * (y - zOffset) + _min
-
 
 def packet_checksum(data):
     """Return two byte checksum from a SMPTE ST 336 KLV structured bytes object."""
