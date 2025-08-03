@@ -269,6 +269,29 @@ class BoundingBoxBottomRightPixel(IntegerElementParser):
     _signed = False
     _size = 3
 
+@VTargetPack.add_parser
+class TargetPriority(IntegerElementParser):
+    key = b'\x04'
+    TAG = 4
+    UDSKey = "-"
+    LDSName = "Target Priority"
+    ESDName = "Target Priority"
+    UDSName = ""
+
+    _signed = False
+    _size = 1
+
+@VTargetPack.add_parser
+class TargetConfidenceLevel(IntegerElementParser):
+    key = b'\x05'
+    TAG = 5
+    UDSKey = "-"
+    LDSName = "Target Confidence Level"
+    ESDName = "Target Confidence Level"
+    UDSName = ""
+
+    _signed = False
+    _size = 1
 
 @VTargetPack.add_parser
 class DetectionCount(IntegerElementParser):
@@ -281,6 +304,18 @@ class DetectionCount(IntegerElementParser):
 
     _signed = False
     _size = 2
+
+@VTargetPack.add_parser
+class TargetColor(IntegerElementParser):
+    key = b'\x08'
+    TAG = 8
+    UDSKey = "-"
+    LDSName = "Target Color"
+    ESDName = "Target Color"
+    UDSName = ""
+
+    _signed = False
+    _size = 3
 
 
 @VTargetPack.add_parser
@@ -296,11 +331,93 @@ class TargetIntensity(IntegerElementParser):
     _size = 3
 
 
-# @VTargetPack.add_parser
-# class TargetLocation(LocationElementParser):
-#     key = b'\x11'
-#     TAG = 17
-#     UDSKey = "-"
-#     LDSName = "Target Location"
-#     ESDName = "Target Location"
-#     UDSName = ""
+@VTargetPack.add_parser
+class TargetLocationLatitudeOffset(LocationElementParser):
+    key = b'\x0A'
+    TAG = 10
+    UDSKey = "-"
+    LDSName = "Target Location Latitude Offset"
+    ESDName = "Target Location Latitude Offset"
+    UDSName = ""
+
+@VTargetPack.add_parser
+class TargetLocationLongitudeOffset(LocationElementParser):
+    key = b'\x0B'
+    TAG = 11
+    UDSKey = "-"
+    LDSName = "Target Location Longitude Offset"
+    ESDName = "Target Location Longitude Offset"
+    UDSName = ""
+    _domain = (0, 2 **(8*3) - 1)
+    _range = (-19.2, 19.2)
+    units = 'degrees'
+
+@VTargetPack.add_parser
+class TargetHeight(MappedElementParser):
+    key = b'\x0C'
+    TAG = 12
+    UDSKey = "-"
+    LDSName = "Target Height"
+    ESDName = "Target Height"
+    UDSName = ""
+    _domain = (0, 2 ** 16 - 1)
+    _range = (-900, 19000)
+    units = 'meters'
+
+@VTargetPack.add_parser
+class TargetLocation(LocationElementParser):
+    key = b'\x11'
+    TAG = 17
+    UDSKey = "-"
+    LDSName = "Target Location"
+    ESDName = "Target Location"
+    UDSName = ""
+
+@VTargetPack.add_parser
+class VObjectLS(SetParser):
+    key = b'\x66'
+    name = "VObject LS"
+    TAG = 102
+    # key_length = 1
+    parsers = {}
+
+@VObjectLS.add_parser
+class Ontology(StringElementParser):
+    key = b'\x01'
+    TAG = 1
+    UDSKey = "-"
+    LDSName = "Ontology"
+    ESDName = "Ontology"
+    UDSName = ""
+
+    min_length, max_length = 0, 127
+
+@VObjectLS.add_parser
+class OntologyClass(StringElementParser):
+    key = b'\x02'
+    TAG = 2
+    UDSKey = "-"
+    LDSName = "Ontology Class"
+    ESDName = "Ontology Class"
+    UDSName = ""
+
+    min_length, max_length = 0, 127
+
+@VTargetPack.add_parser
+class VTrackerLS(SetParser):
+    key = b'\x68'
+    name = "VTracker LS"
+    TAG = 104
+    # key_length = 1
+    parsers = {}
+
+@VTrackerLS.add_parser
+class Algorithm(StringElementParser):
+    key = b'\x06'
+    TAG = 6
+    UDSKey = "-"
+    LDSName = "Algorithm"
+    ESDName = "Algorithm"
+    UDSName = ""
+
+    min_length, max_length = 0, 127
