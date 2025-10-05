@@ -221,14 +221,14 @@ class VTargetPack(SetParser):
 
     @staticmethod
     def decode_ber_length(value):
-        if not value[0] & 0x80:
-            return np.uint32(value[0] & 0x7F), value[1:]
-        buf = value[1: 1 + (value[0] & 0x7F)]
         out = 0
-        for octet in buf:
-            out <<= 8
-            out += octet
-        return np.uint32(out), value[1 + (value[0] & 0x7F):]
+        while value[0] & 0x80:
+            out += value[0] & 0x7F
+            out <<= 7
+            value = value[1:]
+        out += value[0] & 0x7F
+        value = value[1:]
+        return np.uint32(out), value
 
 
 @VTargetPack.add_parser
